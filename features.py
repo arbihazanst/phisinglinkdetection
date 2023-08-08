@@ -6,13 +6,13 @@ import requests
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 from urllib.parse import urlparse
-#from api import get_decrypted_api_key
+from api import get_decrypted_api_key
 
 
 # enkripsi api key
-#json_file = 'encrypted_api_key.json'
-#keyword = 'KUNCI_API_KEY'
-#decrypted_api_key = get_decrypted_api_key(json_file, keyword)
+json_file = 'encrypted_api_key.json'
+keyword = 'KUNCI_API_KEY'
+decrypted_api_key = get_decrypted_api_key(json_file, keyword)
 
 
 # Normalisasi ssl(http/https)
@@ -260,36 +260,36 @@ def check_whois(url_asli):
         return -1
 
 # mengggunakan model openai untuk memeriksa url yang digunakan apakah phishing atau tidak
-#def openai_model_text_davinci_003(url_asli):
-#    counter = 0
-#   while True:
-#        counter += 1
-#       try:
-#            openai.api_key = decrypted_api_key
-#            command = f"Periksa URL ini merupakan phishing atau tidak. Jika phishing berikan nilai output -1, dan jika tidak phishing berikan nilai 1. result hanya berupa angka 1 dan -1 tidak perlu memiliki penjelasan deskripsi. '{url_asli}'"
+def openai_model_text_davinci_003(url_asli):
+    counter = 0
+    while True:
+        counter += 1
+        try:
+            openai.api_key = decrypted_api_key
+            command = f"Periksa URL ini merupakan phishing atau tidak. Jika phishing berikan nilai output -1, dan jika tidak phishing berikan nilai 1. result hanya berupa angka 1 dan -1 tidak perlu memiliki penjelasan deskripsi. '{url_asli}'"
 
-#            response = openai.Completion.create(
-#                model="text-davinci-003",
-#                prompt=command,
-#                temperature=1,
-#                max_tokens=5,
-#                top_p=1,
-#                frequency_penalty=0,
-#                presence_penalty=0
-#            )
-#           result = response.choices[0].text.strip()
+            response = openai.Completion.create(
+                model="text-davinci-003",
+                prompt=command,
+                temperature=1,
+                max_tokens=5,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0
+            )
+            result = response.choices[0].text.strip()
 
 
-#            if result == "1":
-#                return 1
-#            elif result == "-1":
-#                return -1
+            if result == "1":
+                return 1
+            elif result == "-1":
+                return -1
 
-#            print(f"Hasil model text-davinci-003 tidak valid pada percobaan ke-{counter}, mencoba kembali...")
-#        except Exception as e:
-#            print(f"Terjadi kesalahan pada model text-davinci-003 pada percobaan ke-{counter}:", str(e))
-#            print("Akan mencoba kembali setelah 5 detik...")
-#            time.sleep(5)
+            print(f"Hasil model text-davinci-003 tidak valid pada percobaan ke-{counter}, mencoba kembali...")
+        except Exception as e:
+            print(f"Terjadi kesalahan pada model text-davinci-003 pada percobaan ke-{counter}:", str(e))
+            print("Akan mencoba kembali setelah 5 detik...")
+            time.sleep(5)
 
 
 def extract_features(url):
@@ -313,5 +313,5 @@ def extract_features(url):
     features.append(sumber_daya_konten(url_asli))
     features.append(keberadaan_favicon(url_asli))
     features.append(check_whois(url_asli))
-#  features.append(openai_model_text_davinci_003(url_asli))
+    features.append(openai_model_text_davinci_003(url_asli))
     return features
