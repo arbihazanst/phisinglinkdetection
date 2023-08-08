@@ -71,4 +71,4 @@ def result():
 
 warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
