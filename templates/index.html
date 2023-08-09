@@ -263,8 +263,9 @@
 <script>
     setTimeout(function () {
         var alertElement = document.getElementById("alert");
-        alertElement.style.display = "none";
-    }, 2000); // Menghilangkan elemen setelah 5 detik (5000 milidetik)
+        alertElement && (alertElement.style.display = "none");
+    }, 2000); // Menghilangkan elemen setelah 2 detik (2000 milidetik)
+
     // Fungsi clear
     document.getElementById("clearButton").addEventListener("click", function (event) {
         event.preventDefault(); // Mencegah refresh halaman
