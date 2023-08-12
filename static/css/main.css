@@ -1,0 +1,69 @@
+.bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+}
+
+.nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.btn-bd-primary {
+    --bd-green-bg: #198754;
+    --bd-green-rgb: 112.520718, 44.062154, 249.437846;
+    --bs-btn-font-weight: 600;
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: var(--bd-green-bg);
+    --bs-btn-border-color: var(--bd-green-bg);
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: #157147;
+    --bs-btn-hover-border-color: #157147;
+    --bs-btn-focus-shadow-rgb: var(--bd-green-rgb);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg: #115c39;
+    --bs-btn-active-border-color: #115c39;
+}
+
+.bd-mode-toggle {
+    z-index: 1500;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    background-color: #f2f2f2;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px;
+    margin: auto;
+}
+
+.font-tabel {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+
+}
+
+.font-ibm {
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.font-ibm-2 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+}

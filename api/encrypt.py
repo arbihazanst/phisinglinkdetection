@@ -4,9 +4,9 @@ def get_decrypted_api_key(json_file, keyword):
     with open(json_file, 'r') as file:
         data = json.load(file)
 
-    encrypted_api_key = data["encrypted_key"]
+    api_key = data["encrypted_key"]
 
-    decrypted_key = decrypt_key(encrypted_api_key, keyword)
+    decrypted_key = decrypt_key(api_key, keyword)
     return decrypted_key
 
 def decrypt_key(encrypted_key, keyword):
@@ -26,3 +26,4 @@ def decrypt_key(encrypted_key, keyword):
             decrypted_key += char
 
     return decrypted_key
+

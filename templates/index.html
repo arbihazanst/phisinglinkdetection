@@ -1,336 +1,170 @@
-<!doctype html>
-<html lang="en" data-bs-theme="auto">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <script src="{{ url_for('static', filename='js/color-modes.js') }}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.112.5">
-
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
     <title>Detect URL Phishing</title>
 
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
-    <style>
-        .bi {
-            vertical-align: -.125em;
-            fill: currentColor;
-        }
-
-        .nav-scroller .nav {
-            display: flex;
-            flex-wrap: nowrap;
-            padding-bottom: 1rem;
-            margin-top: -1px;
-            overflow-x: auto;
-            text-align: center;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .btn-bd-primary {
-            --bd-green-bg: #198754;
-            --bd-green-rgb: 112.520718, 44.062154, 249.437846;
-
-            --bs-btn-font-weight: 600;
-            --bs-btn-color: var(--bs-white);
-            --bs-btn-bg: var(--bd-green-bg);
-            --bs-btn-border-color: var(--bd-green-bg);
-            --bs-btn-hover-color: var(--bs-white);
-            --bs-btn-hover-bg: #157147;
-            --bs-btn-hover-border-color: #157147;
-            --bs-btn-focus-shadow-rgb: var(--bd-green-rgb);
-            --bs-btn-active-color: var(--bs-btn-hover-color);
-            --bs-btn-active-bg: #115c39;
-            --bs-btn-active-border-color: #115c39;
-        }
-
-        .bd-mode-toggle {
-            z-index: 1500;
-        }
-
-
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            background-color: #f2f2f2;
-        }
-
-        main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            max-width: 400px;
-            margin: auto;
-        }
-
-        .font-tabel {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 15px;
-            /* Ubah ukuran font sesuai kebutuhan */
-        }
-
-        .font-ibm {
-            font-family: 'IBM Plex Mono', monospace;
-        }
-
-        .font-ibm-2 {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 10px;
-            /* Ubah ukuran font sesuai kebutuhan */
-        }
-    </style>
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
 </head>
 
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-    <symbol id="check2" viewBox="0 0 16 16">
-        <path
-            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-    </symbol>
-    <symbol id="circle-half" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
-    </symbol>
-    <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-        <path
-            d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
-        <path
-            d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
-    </symbol>
-    <symbol id="sun-fill" viewBox="0 0 16 16">
-        <path
-            d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
-    </symbol>
-</svg>
 
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="check2" viewBox="0 0 16 16">
+            <path
+                d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+        </symbol>
+        <symbol id="circle-half" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
+        </symbol>
+        <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+            <path
+                d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
+            <path
+                d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
+        </symbol>
+        <symbol id="sun-fill" viewBox="0 0 16 16">
+            <path
+                d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
+        </symbol>
+        <symbol id="check-circle-fill" viewBox="0 0 16 16">
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+        </symbol>
+        <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+            <path
+                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+        </symbol>
+    </svg>
 
-<div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+        <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
             aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-        <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
-            <use href="#circle-half"></use>
-        </svg>
-        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-        <li>
-            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
+            <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+                <use href="#circle-half"></use>
+            </svg>
+            <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
                     aria-pressed="false">
-                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-                    <use href="#sun-fill"></use>
-                </svg>
-                Light
-                <svg class="bi ms-auto d-none" width="1em" height="1em">
-                    <use href="#check2"></use>
-                </svg>
-            </button>
-        </li>
-        <li>
-            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
+                    <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                        <use href="#sun-fill"></use>
+                    </svg>
+                    Light
+                    <svg class="bi ms-auto d-none" width="1em" height="1em">
+                        <use href="#check2"></use>
+                    </svg>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
                     aria-pressed="false">
-                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-                    <use href="#moon-stars-fill"></use>
-                </svg>
-                Dark
-                <svg class="bi ms-auto d-none" width="1em" height="1em">
-                    <use href="#check2"></use>
-                </svg>
-            </button>
-        </li>
-        <li>
-            <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
+                    <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                        <use href="#moon-stars-fill"></use>
+                    </svg>
+                    Dark
+                    <svg class="bi ms-auto d-none" width="1em" height="1em">
+                        <use href="#check2"></use>
+                    </svg>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
                     aria-pressed="true">
-                <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-                    <use href="#circle-half"></use>
-                </svg>
-                Auto
-                <svg class="bi ms-auto d-none" width="1em" height="1em">
-                    <use href="#check2"></use>
-                </svg>
-            </button>
-        </li>
-    </ul>
-</div>
+                    <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                        <use href="#circle-half"></use>
+                    </svg>
+                    Auto
+                    <svg class="bi ms-auto d-none" width="1em" height="1em">
+                        <use href="#check2"></use>
+                    </svg>
+                </button>
+            </li>
+        </ul>
+    </div>
 
-<main class="container p5- my-auto">
-    <form action="{{ url_for('result') }}" method="post" enctype="multipart/form-data">
-        <h1 class="h4 fw-bold font-ibm">Detect URL Phishing</h1>
-        <h1 class="h6 mb-3 font-ibm">Please enter the URL(s) you want to check or upload a text file:</h1>
-
-        {% if error %}
+    <main class="container p5- my-auto">
+        <form action="{{ url_for('home') }}" method="post" enctype="multipart/form-data">
+            <h1 class="h4 fw-bold font-ibm">Detect URL Phishing</h1>
+            <h1 class="h6 mb-3 font-ibm">Please enter the URL(s) you want to check or upload a text file:</h1>
+            {% if error %}
             <div id="alert" class="alert alert-danger font-ibm" role="alert">
                 <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:" width="16" height="16">
-                    <use xlink:href="#exclamation-triangle-fill"/>
+                    <use xlink:href="#exclamation-triangle-fill" />
                 </svg>
                 {{ error }}
             </div>
-        {% endif %}
-
-
-        <div class="mb-3 input-group input-group-lg">
-                    <textarea class="form-control fs-5 font-ibm-2" id="exampleFormControlInput1" name="urls"
-                              rows="4"></textarea>
-        </div>
-
-        <div class="mb-3">
-            <input class="form-control" type="file" id="fileInput" name="file">
-        </div>
-
-        <div class="mb-3 input-group w-100">
-            <button type="button" class="btn btn-outline-success btn-lg w-50" id="pasteButton">Paste</button>
-            <button type="button" class="btn btn-outline-success btn-lg w-50" id="clearButton">Clear</button>
-        </div>
-        <!--
-          <div class="mb-3">
-              <div class="cf-turnstile" data-sitekey="0x4AAAAAAAFrZEgb7O7VRX_D"></div>
-          </div>-->
-
-        <div class="mb-3">
-            <button class="btn btn-success fw-bold w-100 py-2" type="submit" onclick="checkURL()">Check URL</button>
-        </div>
-
-        <table class="table font-tabel">
-            <thead class="thead-dark">
-            <tr>
-                <th>No</th>
-                <th>Url</th>
-                <th>Execution Time</th>
-                <th>Predict Result</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for url, result, formatted_time in results %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ url | truncate(30, True) }}</td>
-                    <td>{{ formatted_time }}</td>
-                    <td class="{% if result == 'This URL is a phishing URL' %}text-danger{% else %}text-success{% endif %}">
-                        <strong>{{ result }}</strong>
-                        {% if result == 'This URL is a phishing URL' %}
-                            <svg class="bi flex-shrink-0 me-2 text-danger" role="img" aria-label="Danger:" width="15" height="25">
-                                <use xlink:href="#exclamation-triangle-fill"/>
+            {% endif %}
+            <div class="mb-3 input-group input-group-lg">
+                <textarea class="form-control fs-5 font-ibm-2" id="exampleFormControlInput1" name="urls"
+                    rows="4"></textarea>
+            </div>
+            <div class="mb-3">
+                <input class="form-control" type="file" id="fileInput" name="file">
+            </div>
+            <div class="mb-3 input-group w-100">
+                <button type="button" class="btn btn-outline-success btn-lg w-50" id="pasteButton">Paste</button>
+                <button type="button" class="btn btn-outline-success btn-lg w-50" id="clearButton">Clear</button>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-success fw-bold w-100 py-2" type="submit" onclick="checkURL()">Check URL</button>
+            </div>
+            <table class="table font-tabel">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>Url</th>
+                        <th>Execution Time</th>
+                        <th>Predict Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for url, result, formatted_time in results %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ url | truncate(30, True) }}</td>
+                        <td>{{ formatted_time }}</td>
+                        <td
+                            class="{% if result == 'This URL is a phishing URL' %}text-danger{% else %}text-success{% endif %}">
+                            <strong>{{ result }}</strong>
+                            {% if result == 'This URL is a phishing URL' %}
+                            <svg class="bi flex-shrink-0 me-2 text-danger" role="img" aria-label="Danger:" width="15"
+                                height="25">
+                                <use xlink:href="#exclamation-triangle-fill" />
                             </svg>
-                        {% else %}
-                            <svg class="bi flex-shrink-0 me-2 text-success" role="img" aria-label="Success:" width="15" height="15">
-                                <use xlink:href="#check-circle-fill"/>
+                            {% else %}
+                            <svg class="bi flex-shrink-0 me-2 text-success" role="img" aria-label="Success:" width="15"
+                                height="15">
+                                <use xlink:href="#check-circle-fill" />
                             </svg>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div style="text-align: center; margin-top: 1em;"></div>
+        </form>
+        <div style="text-align: center;">
+            &copy; 2023 by M Dicky Alfansyah. All rights reserved.
+        </div>
+    </main>
 
-        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-            <symbol id="check-circle-fill" viewBox="0 0 16 16">
-                <path
-                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-            </symbol>
-            <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
-                <path
-                    d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-            </symbol>
-        </svg>
-
-        <div style="text-align: center; margin-top: 1em;"></div>
-    </form>
-    <div style="text-align: center;">
-        &copy; 2023 by M Dicky Alfansyah. All rights reserved.
-    </div>
-</main>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-</script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    </script>
 
 </body>
 
 </html>
-
-
-<script>
-    setTimeout(function () {
-        var alertElement = document.getElementById("alert");
-        alertElement && (alertElement.style.display = "none");
-    }, 2000); // Menghilangkan elemen setelah 2 detik (2000 milidetik)
-
-    // Fungsi clear
-    document.getElementById("clearButton").addEventListener("click", function (event) {
-        event.preventDefault(); // Mencegah refresh halaman
-        document.getElementById("exampleFormControlInput1").value = "";
-        document.getElementById("fileInput").value = ""; // Menghapus inputan file juga
-
-        // Mendapatkan referensi ke elemen tbody
-        var tbody = document.querySelector("table tbody");
-
-        // Menghapus semua baris dari tabel
-        while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild);
-        }
-
-        // Menghapus URL yang disimpan
-        sessionStorage.removeItem("savedURL");
-
-        // Sembunyikan tabel jika tidak ada baris
-        hideTableIfNoRows();
-    });
-
-    // Fungsi paste
-    document.getElementById("pasteButton").addEventListener("click", function (event) {
-        event.preventDefault(); // Mencegah refresh halaman
-        navigator.clipboard.readText().then(function (text) {
-            document.getElementById("exampleFormControlInput1").value = text;
-        });
-    });
-
-    // Fungsi untuk menyimpan URL saat tombol "Check Now" diklik
-    function checkURL() {
-        var inputURL = document.getElementById("exampleFormControlInput1");
-        sessionStorage.setItem("savedURL", inputURL.value);
-    }
-
-    // Fungsi untuk mengisi kembali URL saat halaman dimuat ulang
-    function loadURL() {
-        var savedURL = sessionStorage.getItem("savedURL");
-        if (savedURL) {
-            var inputURL = document.getElementById("exampleFormControlInput1");
-            inputURL.value = savedURL;
-        }
-
-        // Tampilkan tabel jika ada baris
-        showTableIfRows();
-    }
-
-    // Fungsi untuk menyembunyikan tabel jika tidak ada baris
-    function hideTableIfNoRows() {
-        var tbody = document.querySelector("table tbody");
-        var table = document.querySelector("table");
-        if (!tbody.hasChildNodes()) {
-            table.style.display = "none";
-        }
-    }
-
-    // Fungsi untuk menampilkan tabel jika ada baris
-    function showTableIfRows() {
-        var tbody = document.querySelector("table tbody");
-        var table = document.querySelector("table");
-        if (tbody.hasChildNodes()) {
-            table.style.display = "";
-        }
-    }
-
-    // Panggil fungsi loadURL saat halaman dimuat ulang
-    window.onload = loadURL;
-</script>

@@ -3,19 +3,17 @@ import time
 import whois
 import openai
 import requests
+from api.get import unique
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 from urllib.parse import urlparse
-from api import get_decrypted_api_key
+from api.encrypt import get_decrypted_api_key
 
-
-# enkripsi api key
-json_file = 'encrypted_api_key.json'
-keyword = 'KUNCI_API_KEY'
+#-------------Api_Key--------------#
+json_file = 'api/api_key.json'
+keyword = unique() 
 decrypted_api_key = get_decrypted_api_key(json_file, keyword)
 
-
-# Normalisasi ssl(http/https)
 def normalize_protocol_url(url):
     if url.startswith('http://'):
         url = url[7:]
@@ -31,7 +29,6 @@ def normalize_protocol_url(url):
 
     return 'http://' + url
 
-# Normalisasi Url Asli
 def normalize_url_actual(normalisasi_protokol):
     original_url = normalisasi_protokol
 
@@ -43,7 +40,6 @@ def normalize_url_actual(normalisasi_protokol):
 
     return normalisasi_protokol
     
-# menghitung panjang domain
 def length_domain(url_asli):
     parsed_url = urlparse(url_asli)
     domain_parts = parsed_url.netloc.split('.')
@@ -69,7 +65,6 @@ def length_domain(url_asli):
 
     return result_length
 
-# Memeriksa apakah domain memiliki tanda hubung (-)
 def dashes(url_asli):
     parsed_url = urlparse(url_asli)
     domain_parts = parsed_url.netloc.split('.')
@@ -91,8 +86,6 @@ def dashes(url_asli):
         return -1
     return 1
 
-
-# Memeriksa apakah url memiliki protocol http atau https
 def check_ssl(url_asli):
     parsed_url = urlparse(url_asli)
     scheme = parsed_url.scheme
@@ -105,8 +98,6 @@ def check_ssl(url_asli):
     else:
         return -1
 
-
-# Memeriksa penggunaan tld (top level domain) yang di perbolehkan
 def tld(url_asli):
     parsed_url = urlparse(url_asli)
 
@@ -129,7 +120,6 @@ def tld(url_asli):
     else:
         return -1
 
-# Memeriksa penggunaan karakter yang dilarang
 def check_prohibited_characters(url_asli):
 
     parsed_url = urlparse(url_asli)
@@ -141,7 +131,6 @@ def check_prohibited_characters(url_asli):
     else:
         return 1
 
-# Memeriksa panjang karakter spesial yang diperbolehkan
 def length_special_characters(url_asli):
 
     parsed_url = urlparse(url_asli)
@@ -157,7 +146,6 @@ def length_special_characters(url_asli):
     else:
         return -1
 
-# memeriksa banyak path yang digunakan
 def check_path(url_asli):
 
     parsed_url = urlparse(url_asli)
@@ -173,7 +161,6 @@ def check_path(url_asli):
     else:
         return -1
 
-# Memeriksa banyak single slash yang digunakan
 def count_single_slash(url_asli):
 
     parsed_url = urlparse(url_asli)
@@ -186,7 +173,6 @@ def count_single_slash(url_asli):
     else:
         return 1
 
-# Memeriksa banyak titik yang digunakan dengen batas maksimal 5
 def count_dots(url_asli):
 
     parsed_url = urlparse(url_asli)
@@ -199,7 +185,6 @@ def count_dots(url_asli):
     else:
         return 1
 
-# memeriksa panjang url yang digunakan dengan batas maksimal 80 karakter
 def length_url(url_asli):
 
     parsed_url = urlparse(url_asli)
@@ -211,7 +196,6 @@ def length_url(url_asli):
     else:
         return 1
 
-# memeriksa sumbers daya konten yang digunakan mengandung kata yang mencurigakan
 def sumber_daya_konten(url_asli):
     try:
         response = requests.get(url_asli)
@@ -229,7 +213,6 @@ def sumber_daya_konten(url_asli):
     except requests.exceptions.RequestException as e:
         return 1
 
-# memeriksa keberadaan favicon
 def keberadaan_favicon(url_asli):
     try:
         response = requests.get(url_asli)
@@ -245,7 +228,6 @@ def keberadaan_favicon(url_asli):
     except requests.exceptions.RequestException as e:
         return -1
 
-# Memeriksa whois domain yang digunakan apakah memiliki status atau tidak
 def check_whois(url_asli):
     parsed_url = urlparse(url_asli)
 
@@ -259,7 +241,6 @@ def check_whois(url_asli):
         print("Error saat memeriksa whois, Nilai dikembalikan menjadi -1:", e)
         return -1
 
-# mengggunakan model openai untuk memeriksa url yang digunakan apakah phishing atau tidak
 def openai_model_text_davinci_003(url_asli):
     counter = 0
     while True:
@@ -279,7 +260,6 @@ def openai_model_text_davinci_003(url_asli):
             )
             result = response.choices[0].text.strip()
 
-
             if result == "1":
                 return 1
             elif result == "-1":
@@ -293,10 +273,8 @@ def openai_model_text_davinci_003(url_asli):
 
 
 def extract_features(url):
-    # Normalisasi protokol URL
     normalized_protocol_url = normalize_protocol_url(url)
 
-    # Dapatkan URL asli setelah normalisasi
     url_asli = normalize_url_actual(normalized_protocol_url)
 
     features = []
@@ -315,3 +293,8 @@ def extract_features(url):
     features.append(check_whois(url_asli))
     features.append(openai_model_text_davinci_003(url_asli))
     return features
+
+
+
+
+
