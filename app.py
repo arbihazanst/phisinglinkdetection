@@ -43,10 +43,10 @@ def home():
             urls += file_urls
         if not urls:
             error='Please input URL or upload a file!'
-            return render_template('index.html', error=error), 400
+            return render_template('main.html', error=error), 400
         if len(urls) > 100:
             error='Maximum 5 URLs can be inputted!'
-            return render_template('index.html', error=error), 400
+            return render_template('main.html', error=error), 400
 
         for url_asli in urls:
             start_time = time.time()
@@ -59,7 +59,7 @@ def home():
             result = "This URL is a phishing URL" if prediction[0] == -1 else "This URL is a legitimate URL"
             formatted_time = format_execution_time(execution_time)
             results.append((url_asli, result, formatted_time))
-    return render_template('index.html', results=results)
+    return render_template('main.html', results=results)
 
 warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
 if __name__ == '__main__':
