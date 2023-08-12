@@ -44,7 +44,7 @@ def home():
         if not urls:
             error='Please input URL or upload a file!'
             return render_template('main.html', error=error), 400
-        if len(urls) > 100:
+        if len(urls) > 5:
             error='Maximum 5 URLs can be inputted!'
             return render_template('main.html', error=error), 400
 
